@@ -1,4 +1,4 @@
-# 3D Chip Firing
+# 3D Chip-Firing
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
