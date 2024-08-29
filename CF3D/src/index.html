@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CF3D</title>
+    <link rel="stylesheet" href="styles.css"></head>
+<body>
+    <div id="controlPanel">
+        <h1 class="title">Controls</h1>
+        <div class="optionDiv">
+            <h2>
+                Chips:
+            </h2>
+            <input id="chipInput" type="number" value="0" min="0">
+        </div>
+        <div class="optionDiv">
+            <h2>
+                Background:
+            </h2>
+            <input id="backgroundInput" type="number" value="0" min="0">
+        </div>
+        <button id="FIRE" class="button"> Fire Chips</button>
+        <button id="CLEAR" class="button"> Clear</button>
+        <div class="optionDiv">
+            <h2>
+                Render while firing:
+            </h2>
+            <label class="toggle" >
+                <input type="checkbox" id="renderWhileFiring" value="on">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="optionDiv">
+            <h2>
+                Clipping plane:
+            </h2>
+            <label class="toggle">
+                <input type="checkbox" id="clippingPlane" value="off">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="optionDiv">
+            <h2>
+                Boundary:
+            </h2>
+            <input id="boundaryInput" type="number" value="0" min="0">
+        </div>
+        <script type="module" src="./js/main.js"></script>
+        <!-- <div id="neighborhoodEditor"></script></div> -->
+        <canvas id="neighborhoodCanvas"></canvas>
+
+    </div>
+    <canvas id="mainCanvas"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.3.2/math.js"></script>
+</body>
+</html>
