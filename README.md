@@ -32,3 +32,20 @@ The source code in this repository is released under the MIT License. However, a
 [three.js](https://threejs.org/)
 [math.js](https://mathjs.org/)
 [node.js](https://nodejs.org/en)
+[parcel.js](https://parceljs.org/)
+
+## Project Setup
+- Make sure you have Node.js installed on your device. If you are uncertain whether you already have node installed, run the command "node -v" in your terminal.
+- Run the command "npm install" to install all necessary packages for CF3D
+To run CF3D: 
+- Run the command "parcel ./src/index.html" in your terminal.
+- Open the subsequent link (e.g. http://localhost:1234) once the project has been built.
+
+## Notes:
+- The chip-firing visualiser and the neighbourhood editor cannot render simultaneously in order to avoid performance issues. Hovering over one of the editors with the mouse will cause the other to freeze.
+- Disabling rendering while firing has no performance benefits in the current version of CF3D.
+
+## Troubleshooting
+Deleting the folders "node_modules", ".parcel-cache" and "dist" and running the command "npm install" again should solve most issues.
+
+
