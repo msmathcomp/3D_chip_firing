@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import {voxel} from './voxel.js';
 import { neighborCount, neighborOffsets, isInNeighborhood, neighborhoodScene} from './neighborhood';
-import { normalize } from 'three/src/math/MathUtils.js';
 import { DragControls } from 'three/examples/jsm/Addons.js';
 
 // ----- Main Scene Initialisation -----
@@ -103,8 +102,9 @@ function clear() {
     firstVoxel.neighbors = [];
     voxels = [firstVoxel];
     console.log(voxels.length);
-
+    adjustToChipcount(true);
 }
+
 var renderWhileFiringSwitch = document.getElementById("renderWhileFiring");
 var renderWhileFiring = function(){return renderWhileFiringSwitch.checked}
 var clippingPlaneSwitch = document.getElementById("clippingPlane");
@@ -180,36 +180,41 @@ dControls.addEventListener("drag", function (e) {
 
         console.log("fwd: " + handle.position.x);
     }
-    else{
-
-    }
     cutObject();
 
 }) 
-dControls.activate()
+dControls.activate();
 
 
 clippingPlaneSwitch.addEventListener("change", function(){
     if(this.checked){
         cutObject();
+        toggleClippingPlane();
         return;
     }
     voxels.forEach(voxel => {
+        toggleClippingPlane();
         voxel.visualObj.scale.set(1,1,1) 
     })
     
 })
-function toggleClippingPlane() {
-    if (clippingPlaneSwitch.checked) {
-        handle.material.transparent = false;
-        plane.material.opacity = planeOpacity;
-        dControls.activate();
+handleMaterial.transparent = true;
+handleMaterial.opacity = 0;
+plane.material.opacity = 0;
+dControls.deactivate();
+function toggleClippingPlane(activate = false) {
+    if (!clippingPlaneSwitch.checked && !activate) {
+        handleMaterial.transparent = true;
+        handleMaterial.opacity = 0;
+        plane.material.opacity = 0;
+        dControls.deactivate();
         return;
     }
-    handle.material.transparent = true;
-    handle.material.opacity = 0;
-    plane.material.opacity = 0;
-    dControls.deactivate();
+
+    handleMaterial.transparent = false;
+    handle.material.opacity = 100;
+    plane.material.opacity = planeOpacity;
+    dControls.activate();
 }
 
 // orbit.addEventListener("start", function(e){
@@ -276,7 +281,6 @@ function animate(time){
         neighborhoodRenderer.render(neighborhoodScene, neighborhoodCamera);
         return;
     }
-    toggleClippingPlane();
     renderer.render(mainScene, camera);
 
 }
@@ -386,8 +390,8 @@ function changeCubeColor(passedVoxels = []){
 
 }
 
-function adjustToChipcount(){
-    if(objectWidth < 4)
+function adjustToChipcount(adjustOnClear = false){
+    if(objectWidth < 4 && !adjustOnClear)
         return;
     handleScaler = 1+ objectWidth / 10;
     handle.scale.set(handleScaler, handleScaler, handleScaler)
@@ -404,3 +408,4 @@ function zoomOut(){
 
 slowTick();
 animate();
+toggleClippingPlane();
