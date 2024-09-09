@@ -35,10 +35,11 @@ The source code in this repository is released under the MIT License. However, a
 [parcel.js](https://parceljs.org/)
 
 ## Project Setup
-- Make sure you have Node.js installed on your device. If you are uncertain whether you already have node installed, run the command "node -v" in your terminal.
-- Run the command "npm install" to install all necessary packages for CF3D
+- Make sure you have Node.js installed on your device. If you are uncertain whether you already have node installed, run the command `node -v` in your terminal.
+- Navigate to the `CF3D` folder and in the folder, run the command `npm install` to install all necessary packages for the project.
+
 To run CF3D: 
-- Run the command "parcel ./src/index.html" in your terminal.
+- In the folder `CF3D`, run the command `npx parcel ./src/index.html` in your terminal.
 - Open the subsequent link (e.g. http://localhost:1234) once the project has been built.
 
 ## Notes:
@@ -46,6 +47,6 @@ To run CF3D:
 - Disabling rendering while firing has no performance benefits in the current version of CF3D.
 
 ## Troubleshooting
-Deleting the folders "node_modules", ".parcel-cache" and "dist" and running the command "npm install" again should solve most issues.
+Deleting the folders `node_modules`, `.parcel-cache`, and `dist` and running the command `npm install` again should solve most issues.
 
 
