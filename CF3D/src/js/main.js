@@ -230,14 +230,49 @@ function toggleClippingPlane(activate = false) {
 var hasFiredRecently = false;
 const firstVoxPos = firstVoxel.position;
 firstBox.position.set(firstVoxPos[0], firstVoxPos[1], firstVoxPos[2]);
-const sequence = asyncFireChips();
 function animate(time){
     requestAnimationFrame(animate);
 
     if(isFiring){
-        sequence.next();
+        for(let i = 0; i < voxels.length; i++){
+            var currentVoxel = voxels[i];
+
+            var isOutsideBounds = Math.abs(currentVoxel.position[0]) > boundary || 
+                                Math.abs(currentVoxel.position[1]) > boundary || 
+                                Math.abs(currentVoxel.position[2]) > boundary
+
+            if(isOutsideBounds && boundary != 0){
+                isFiring = false;
+                onFiringEnded()
+                break;
+            }
+
+            objectWidth = Math.log10(voxels.length + 11.6222)*6.5203 - 6.15822
+
+            if (currentVoxel.chipCount >= neighborCount) {
+                hasFiredRecently = true;
+                var currentNeighbors = currentVoxel.fire(getExistingNeighbors);
+
+                if(renderWhileFiring())
+                {
+                createNewCube(currentNeighbors[0]);
+                changeCubeColor(currentNeighbors[1]);
+                changeCubeColor([currentVoxel]);
+                console.log("number of voxels: " + voxels.length);
+                }
+                else{
+                    currentNeighbors[0].forEach(newVoxel => {
+                        voxels.push(newVoxel);
+                    });
+                    console.log("number of voxels: " + voxels.length);
+
+                }
+
+            }
+        }
         adjustToChipcount();
         cutObject();
+
     }
     else
         applySettings()
@@ -249,44 +284,7 @@ function animate(time){
     renderer.render(mainScene, camera);
 
 }
-function *asyncFireChips(){
-    for (let i = 0; i < voxels.length; i++) {
-        var currentVoxel = voxels[i];
-        console.log("current I: " + i);
-        var isOutsideBounds = Math.abs(currentVoxel.position[0]) > boundary ||
-            Math.abs(currentVoxel.position[1]) > boundary ||
-            Math.abs(currentVoxel.position[2]) > boundary
 
-        if (isOutsideBounds && boundary != 0) {
-            isFiring = false;
-            onFiringEnded();
-            break;
-        }
-
-        objectWidth = Math.log10(voxels.length + 11.6222) * 6.5203 - 6.15822
-
-        if (currentVoxel.chipCount >= neighborCount) {
-            hasFiredRecently = true;
-            var currentNeighbors = currentVoxel.fire(getExistingNeighbors);
-
-            if (renderWhileFiring()) {
-                createNewCube(currentNeighbors[0]);
-                changeCubeColor(currentNeighbors[1]);
-                changeCubeColor([currentVoxel]);
-                console.log("number of voxels: " + voxels.length);
-            }
-            else {
-                currentNeighbors[0].forEach(newVoxel => {
-                    voxels.push(newVoxel);
-                });
-                console.log("number of voxels: " + voxels.length);
-
-            }
-        }
-        yield null;
-    }
-
-}
 function cutObject(){
     if (!clippingPlaneSwitch.checked)
         return;
@@ -309,7 +307,9 @@ function cutObject(){
             return;
         }
         voxel.visualObj.scale.set(1, 1, 1);
+
     });
+    
 }
 function applySettings(){
     firstVoxel.chipCount = Number(chipInput.value)
@@ -335,7 +335,6 @@ const slowTick = async () => {
     }
 }
 function onFiringEnded(){
-    sequence.return();
     console.log("Firing Ended");
     fireBtn.disabled = false;
     isFiring = false;
